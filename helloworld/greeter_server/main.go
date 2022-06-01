@@ -28,7 +28,7 @@ import (
 
 	"google.golang.org/grpc"
 	//pb "google.golang.org/grpc/examples/helloworld/helloworld"
-	pb "../helloworld/helloworld_service"
+	pb "github.com/aditya-tech-consulting/go-grpc/tree/master/helloworld/helloworld"
 )
 
 var (
