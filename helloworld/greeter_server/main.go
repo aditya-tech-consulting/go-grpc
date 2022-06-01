@@ -28,7 +28,7 @@ import (
 
 	"google.golang.org/grpc"
 	//pb "google.golang.org/grpc/examples/helloworld/helloworld"
-	pb "github.com/aditya-tech-consulting/go-grpc/tree/master/helloworld/helloworld"
+	pb "github.com/aditya-tech-consulting/go-grpc/helloworld/helloworld/v1.0"
 )
 
 var (
@@ -67,23 +67,23 @@ type StudentCourse struct {
 }
 
 // SayHello implements helloworld.GreeterServer
-func (s *server) SayHello(ctx context.Context, in HelloRequest) (*HelloReply, error) {
+func (s *server) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.HelloReply, error) {
 	log.Printf("Received: %v", in.GetName())
-	return &HelloReply{Message: "Hello " + in.GetName()}, nil
+	return &pb.HelloReply{Message: "Hello " + in.GetName()}, nil
 }
-func (s *server) SayHelloAgain(ctx context.Context, in HelloRequest) (*HelloReply, error) {
-	return &HelloReply{Message: "Hello again " + in.GetName()}, nil
+func (s *server) SayHelloAgain(ctx context.Context, in *pb.HelloRequest) (*pb.HelloReply, error) {
+	return &pb.HelloReply{Message: "Hello again " + in.GetName()}, nil
 }
-func (s *server) CreateProfessor(ctx context.Context, in ProfessorRequest) (ProfessorReply, error) {
+func (s *server) CreateProfessor(ctx context.Context, in *pb.ProfessorRequest) (*pb.ProfessorReply, error) {
 	p1 := Professor{in.GetName(), in.GetSubject(), in.GetId()}
 
 	professors[in.GetId()] = p1
 	fmt.Println("Professors:", professors)
-	return &ProfessorReply{Name: in.GetName(), Subject: in.GetSubject(), Id: in.GetId()}, nil
+	return &pb.ProfessorReply{Name: in.GetName(), Subject: in.GetSubject(), Id: in.GetId()}, nil
 
 }
 
-func (s *server) CreateCourse(ctx context.Context, in *CourseRequest) (CourseReply, error) {
+func (s *server) CreateCourse(ctx context.Context, in *pb.CourseRequest) (*pb.CourseReply, error) {
 	c1 := Course{in.GetName(), in.GetId()}
 
 	courses[in.GetId()] = c1
@@ -92,15 +92,15 @@ func (s *server) CreateCourse(ctx context.Context, in *CourseRequest) (CourseRep
 
 }
 
-func (s *server) CreateStudent(ctx context.Context, in *StudentRequest) (StudentReply, error) {
+func (s *server) CreateStudent(ctx context.Context, in *pb.StudentRequest) (*pb.StudentReply, error) {
 
 	student := Student{in.GetName(), in.GetId()}
 	students[in.GetId()] = student
 	fmt.Println("Students:", students)
-	return &StudentReply{Name: in.GetName(), Id: in.GetId()}, nil
+	return &pb.StudentReply{Name: in.GetName(), Id: in.GetId()}, nil
 
 }
-func (s *server) GetStudentCourse(ctx context.Context, in *StudentCourseSearchRequest) (*StudentCourseSearchReply, error) {
+func (s *server) GetStudentCourse(ctx context.Context, in *pb.StudentCourseSearchRequest) (*pb.StudentCourseSearchReply, error) {
 	//studentCourse := StudentCourse{in.GetStudentName(), in.GetCourseName(), in.GetProfessorName()}
 	studentCourseList := studentCourses[in.GetCourseName()]
 	var studentCourseTemp StudentCourse
@@ -111,15 +111,15 @@ func (s *server) GetStudentCourse(ctx context.Context, in *StudentCourseSearchRe
 			break
 		}
 	}
-	return &StudentCourseSearchReply{StudentName: studentCourseTemp.studentName, CourseName: studentCourseTemp.courseName, ProfessorName: studentCourseTemp.professorName}, nil
+	return &pb.StudentCourseSearchReply{StudentName: studentCourseTemp.studentName, CourseName: studentCourseTemp.courseName, ProfessorName: studentCourseTemp.professorName}, nil
 }
-func (s *server) CreateStudentCourse(ctx context.Context, in *StudentCourseRequest) (StudentCourseReply, error) {
+func (s *server) CreateStudentCourse(ctx context.Context, in *pb.StudentCourseRequest) (*pb.StudentCourseReply, error) {
 	studentCourse := StudentCourse{in.GetStudentName(), in.GetCourseName(), in.GetProfessorName()}
 	studentCourseList := studentCourses[in.GetCourseName()]
 	studentCourseList = append(studentCourseList, studentCourse)
 	studentCourses[in.GetCourseName()] = studentCourseList
 	fmt.Println("Student Course List:", studentCourses)
-	return &StudentCourseReply{StudentName: in.GetStudentName(), CourseName: in.GetCourseName(), ProfessorName: in.GetProfessorName()}, nil
+	return &pb.StudentCourseReply{StudentName: in.GetStudentName(), CourseName: in.GetCourseName(), ProfessorName: in.GetProfessorName()}, nil
 }
 func main() {
 	flag.Parse()
