@@ -1,4 +1,5 @@
-module google.golang.org/grpc/examples
+//module google.golang.org/grpc/examples
+module github.com/aditya-tech-consulting/go-grpc
 
 go 1.14
 
