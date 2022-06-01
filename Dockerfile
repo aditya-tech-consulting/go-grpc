@@ -1,4 +1,4 @@
-FROM golang:1.16-alpine
+FROM golang:latest
 #FROM busybox
 
 # Set destination for COPY
@@ -13,10 +13,10 @@ COPY go.sum /
 
 RUN go get google.golang.org/grpc
 
-RUN apk update
-RUN apk add git
-RUN go clean -modcache
-RUN go get github.com/aditya-tech-consulting/go-grpc/helloworld/helloworld/v1.0
+#RUN apk update
+#RUN apk add git
+#RUN go clean -modcache
+RUN go get github.com/aditya-tech-consulting/go-grpc/helloworld/helloworld
 RUN go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.28
 RUN go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2
 EXPOSE 50051
