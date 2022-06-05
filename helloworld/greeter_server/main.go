@@ -25,9 +25,11 @@ import (
 	"fmt"
 	"log"
 	"net"
+	_ "net/http/pprof"
 	"os"
 
 	"google.golang.org/grpc"
+
 	//pb "google.golang.org/grpc/examples/helloworld/helloworld"
 	pb "github.com/aditya-tech-consulting/go-grpc/helloworld/helloworld"
 )
@@ -122,11 +124,18 @@ func (s *server) CreateStudent(ctx context.Context, in *pb.StudentRequest) (*pb.
 }
 func (s *server) GetStudentCourse(ctx context.Context, in *pb.StudentCourseSearchRequest) (*pb.StudentCourseSearchReply, error) {
 	//studentCourse := StudentCourse{in.GetStudentName(), in.GetCourseName(), in.GetProfessorName()}
+	fileInfo, err := openLogFile(INFO_LOG)
+	log.Print("Error Generated:", err)
+	infoLog := log.New(fileInfo, "[info]", log.LstdFlags|log.Lshortfile|log.Lmicroseconds)
+	infoLog.Printf("Course Name to be searched:", in.GetCourseName)
+	infoLog.Printf("Student Name to be Searched:", in.GetStudentName())
 	studentCourseList := studentCourses[in.GetCourseName()]
+	infoLog.Printf("Student Course List available:", studentCourseList)
 	var studentCourseTemp StudentCourse
 	for _, studentCourseData := range studentCourseList {
 		if studentCourseData.courseName == in.GetCourseName() {
 			studentCourseTemp := studentCourseData
+			infoLog.Printf("Matched Student Course ", studentCourseTemp)
 			fmt.Print(studentCourseTemp)
 			break
 		}
@@ -134,13 +143,15 @@ func (s *server) GetStudentCourse(ctx context.Context, in *pb.StudentCourseSearc
 	return &pb.StudentCourseSearchReply{StudentName: studentCourseTemp.studentName, CourseName: studentCourseTemp.courseName, ProfessorName: studentCourseTemp.professorName}, nil
 }
 func (s *server) CreateStudentCourse(ctx context.Context, in *pb.StudentCourseRequest) (*pb.StudentCourseReply, error) {
+	fileInfo, err := openLogFile(INFO_LOG)
+	log.Print("Error Generated:", err)
+	infoLog := log.New(fileInfo, "[info]", log.LstdFlags|log.Lshortfile|log.Lmicroseconds)
+	infoLog.Printf("Course Name, Student Name, Professor  to be added:", in.GetCourseName, in.GetStudentName(), in.GetProfessorName())
 	studentCourse := StudentCourse{in.GetStudentName(), in.GetCourseName(), in.GetProfessorName()}
 	studentCourseList := studentCourses[in.GetCourseName()]
 	studentCourseList = append(studentCourseList, studentCourse)
 	studentCourses[in.GetCourseName()] = studentCourseList
-	fileInfo, err := openLogFile(INFO_LOG)
 	log.Print("Error Generated:", err)
-	infoLog := log.New(fileInfo, "[info]", log.LstdFlags|log.Lshortfile|log.Lmicroseconds)
 	fmt.Println("Student Course List:", studentCourses)
 	infoLog.Printf("Student Course List:", studentCourses)
 	return &pb.StudentCourseReply{StudentName: in.GetStudentName(), CourseName: in.GetCourseName(), ProfessorName: in.GetProfessorName()}, nil

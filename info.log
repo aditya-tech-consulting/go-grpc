@@ -1,0 +1,5 @@
+[info]2022/06/02 21:27:23.334009 main.go:94: Professors:%!(EXTRA map[string]main.Professor=map[1:{Dr. Watson Medicine 1}])
+[info]2022/06/02 21:29:31.829612 main.go:108: Courses:%!(EXTRA map[string]main.Course=map[1:{Medicine 1}])
+[info]2022/06/02 21:30:29.541514 main.go:121: Students:%!(EXTRA map[string]main.Student=map[1:{None 1}])
+[info]2022/06/02 21:32:28.568435 main.go:121: Students:%!(EXTRA map[string]main.Student=map[1:{Dev WhatMore 1}])
+[info]2022/06/02 21:34:09.347155 main.go:147: Student Course List:%!(EXTRA map[string][]main.StudentCourse=map[Medicine:[{Dev WhatMore Medicine Dr. Watson}]])

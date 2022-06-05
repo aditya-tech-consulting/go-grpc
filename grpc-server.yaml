@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: gerpc-service
+spec:
+  type: NodePort
+  selector:
+    server: grpc-server
+  ports:
+  - port: 8080
+    targetPort: 8080
+
+---
+kind: Pod
+apiVersion: v1
+metadata:
+  name: grpc-server
+  labels:
+     server: grpc-server
+spec:
+  volumes:
+    - name: service-log
+      emptyDir: {}
+  containers:
+  - name: grpc-server
+    image: cloudnativeuser/grpc-service:go
+    volumeMounts:
+      - mountPath: /app
+        name: service-log
+  - name: debug-server
+    image: lightruncom/koolkits:golang
+    imagePullPolicy: Never
+    volumeMounts:
+      - mountPath: /app
+        name: service-log
