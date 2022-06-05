@@ -8,6 +8,9 @@ WORKDIR /app
 COPY go.mod .
 #COPY go.sum .
 COPY  ./helloworld ./
+RUN mkdir -p /data/logs
+RUN touch /data/logs/info.log
+RUN touch /data/logs/error.log 
 #COPY go.mod /
 #COPY go.sum /
 

@@ -35,8 +35,8 @@ import (
 )
 
 const (
-	ERR_LOG  = "error.log"
-	INFO_LOG = "info.log"
+	ERR_LOG  = "/data/logs/error.log"
+	INFO_LOG = "/data/logs/info.log"
 )
 
 var (

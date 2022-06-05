@@ -23,13 +23,18 @@ spec:
       emptyDir: {}
   containers:
   - name: grpc-server
-    image: cloudnativeuser/grpc-service:go
+    image: cloudnativeuser/grpc-service:log
+    imagePullPolicy: Always
     volumeMounts:
-      - mountPath: /app
+      - mountPath: /data/logs
         name: service-log
   - name: debug-server
     image: lightruncom/koolkits:golang
+    args:
+    - sh
+    - -c 
+    - "sleep infinity"
     imagePullPolicy: Never
     volumeMounts:
-      - mountPath: /app
+      - mountPath: /data/logs
         name: service-log
